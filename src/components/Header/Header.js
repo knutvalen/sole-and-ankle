@@ -28,17 +28,22 @@ const Header = () => {
 
 const MainHeader = styled.div`
   display: flex;
+  gap: 32px;
   padding: 0 32px;
   border-bottom: 1px solid ${COLORS.gray[300]};
   height: 4.5rem;
   align-items: center;
+  position: relative;
 `;
 
 const Nav = styled.nav`
-  position: relative;
+  position: absolute;
+  inset: 0;
   margin: auto;
   display: flex;
   gap: 48px;
+  justify-content: center;
+  align-items: center;
 `;
 
 const NavLink = styled.a`
