@@ -31,65 +31,25 @@ const ShoeCard = ({
       ? 'new-release'
       : 'default'
 
-  const STYLE = {
-    'default': {
-      price: {
-        color: COLORS.gray[900],
-        textDecorationLine: 'none',
-      },
-    },
-    'on-sale': {
-      flag : {
-        text: 'Sale',
-        backgroundColor: COLORS.primary,
-      },
-      price: {
-        color: COLORS.gray[700],
-        textDecorationLine: 'line-through',
-      },
-    },
-    'new-release': {
-      flag : {
-        text: 'Just Released!',
-        backgroundColor: COLORS.secondary,
-      },
-      price: {
-        color: COLORS.gray[900],
-        textDecorationLine: 'none',
-      },
-    },
-  };
-
-  const style = STYLE[variant];
-
-  if (!style) {
-    throw new Error(`Invalid style: ${style}`);
-  }
-
   return (
     <Link href={`/shoe/${slug}`}>
       <Wrapper>
         <ImageWrapper>
           <Image alt="" src={imageSrc} />
-          {
-            variant !== 'default'
-              ? <Flag style={{
-                '--backgroundColor': style.flag.backgroundColor
-              }}>{style.flag.text}</Flag>
-              : null
-          }
+          {variant === 'on-sale' && <SaleFlag>Sale</SaleFlag>}
+          {variant === 'new-release' && <JustReleasedFlag>Just Released!</JustReleasedFlag>}
         </ImageWrapper>
         <Spacer size={12} />
         <Row>
           <Name>{name}</Name>
           <Price style={{
-            '--color': style.price.color,
-            '--textDecorationLine': style.price.textDecorationLine
+            '--color': variant === 'on-sale' ? COLORS.gray[700] : undefined,
+            '--textDecorationLine': variant === 'on-sale' ? 'line-through' : undefined,
           }}>{formatPrice(price)}</Price>
         </Row>
         <Row>
           <ColorInfo>{pluralize('Color', numOfColors)}</ColorInfo>
-          {variant === 'on-sale' ? <SalePrice>{formatPrice(salePrice)}</SalePrice> : null}
+          {variant === 'on-sale' ? <SalePrice>{formatPrice(salePrice)}</SalePrice> : undefined}
         </Row>
       </Wrapper>
     </Link>
@@ -148,12 +108,19 @@ const Flag = styled.div`
   position: absolute;
   top: 12px;
   right: -4px;
-  background-color: var(--backgroundColor);
   color: ${COLORS.white};
-  font-weight: 700;
+  font-weight: ${WEIGHTS.bold};
   font-size: 1rem;
   padding: 8px;
   border-radius: 2px;
+`;
+
+const SaleFlag = styled(Flag)`
+  background-color: ${COLORS.primary};
+`;
+
+const JustReleasedFlag = styled(Flag)`
+  background-color: ${COLORS.secondary};
 `;
 
 export default ShoeCard;
